@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -11,6 +12,7 @@ public class FootIk_Aguapanela : MonoBehaviour
     [SerializeField] private Vector2 snapOffsets; //x: desfase en reposo, y: desfase al levantar el pie
     [SerializeField] private string snapOffsetParameter;
     [SerializeField] private float snapSpeed = 5;
+    [SerializeField] private Vector3 snapRotationOffset; //Desfase para ajustar rotacion del pie
 
     private Animator animator;
     
@@ -18,7 +20,6 @@ public class FootIk_Aguapanela : MonoBehaviour
     private RaycastHit ikTarget;
 
     private Vector3 currentIkPosition;
-    
     
     /// <summary>
     /// Obtener el punto inicial desde el cual se lanzara el rayo para detectar superficies
@@ -56,6 +57,10 @@ public class FootIk_Aguapanela : MonoBehaviour
         float snapInterpolator = animator.GetFloat(snapOffsetParameter);
         float solvedSnapOffset = Mathf.Lerp(snapOffsets.x, snapOffsets.y, snapInterpolator);
         animator.SetIKPosition(ikGoal, currentIkPosition + detectionReference.up * solvedSnapOffset);
+        
+        animator.SetIKRotationWeight(ikGoal, snapInterpolator);
+        Quaternion rot = Quaternion.LookRotation(ikTarget.normal) * Quaternion.Euler(snapRotationOffset);
+        animator.SetIKRotation(ikGoal, rot);
     }
 
     public Transform DetectionReference => detectionReference;
