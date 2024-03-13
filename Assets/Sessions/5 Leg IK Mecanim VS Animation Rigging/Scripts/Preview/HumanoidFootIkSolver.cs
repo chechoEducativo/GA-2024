@@ -16,101 +16,237 @@ public class HumanoidFootIkSolver : MonoBehaviour
         }
     }
     
-    [SerializeField] private AvatarIKGoal ikGoal;
-    [SerializeField] private AvatarIKHint ikHint;
+    // [SerializeField] private AvatarIKGoal ikGoal;
+    // [SerializeField] private AvatarIKHint ikHint;
     [SerializeField] private Transform detectionReference;
-    [SerializeField] private Transform foot;
-    [SerializeField] private Transform knee;
+    [SerializeField] private Transform rightFoot;
+    [SerializeField] private Transform leftFoot;
     [SerializeField][Range(0,1)] private float detectionStart;
     [SerializeField] private float maxDetectionDistance;
     [SerializeField] private float surfaceOffset;
-    [SerializeField] [Range(0, 180)] private float snapSlope;
     [SerializeField] private Vector3 rotationOffset;
-    [SerializeField] private float hintRotationOffset;
 
     [SerializeField] private float hipsOffset;
     [SerializeField] private Transform hipBone;
+    [SerializeField] private string detectionTag;
 
-    private bool hasSnapTarget;
-    private SnapTargetData snapTarget;
-    private Vector3 smoothSnapPosition;
-    private Vector3 smoothSnapNormal;
-    private Animator anim;
+    private bool hasLeftSnapTarget;
+    private bool hasRightSnapTarget;
+    private RaycastHit leftSnapTarget;
+    private RaycastHit rightSnapTarget;
+    private Vector3 leftSmoothSnapPosition;
+    private Vector3 leftSmoothSnapNormal;
     
+    private Vector3 rightSmoothSnapPosition;
+    private Vector3 rightSmoothSnapNormal;
+    private Animator anim;
 
-    public Vector3 GetDetectionStartPoint()
+    private Vector3 targetTransformPos;
+    private Vector3 smoothTransformPos;
+
+    public Transform GetFoot(AvatarIKGoal goal)
     {
-        Vector3 referenceSpacePosition = detectionReference.InverseTransformPoint(foot.position);
+        switch (goal)
+        {
+            case AvatarIKGoal.LeftFoot:
+                return leftFoot;
+            case AvatarIKGoal.RightFoot:
+                return rightFoot;
+            default:
+                return null;
+        }
+    }
+
+    public bool QuerySnapForFoot(AvatarIKGoal goal)
+    {
+        switch (goal)
+        {
+            case AvatarIKGoal.LeftFoot:
+                return hasLeftSnapTarget;
+            case AvatarIKGoal.RightFoot:
+                return hasRightSnapTarget;
+            default:
+                return false;
+        }
+    }
+    private void SetSnapForFoot(AvatarIKGoal goal, bool value)
+    {
+        switch (goal)
+        {
+            case AvatarIKGoal.LeftFoot:
+                hasLeftSnapTarget = value;
+                break;
+            case AvatarIKGoal.RightFoot:
+                hasRightSnapTarget = value;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public RaycastHit GetSnapData(AvatarIKGoal goal)
+    {
+        switch (goal)
+        {
+            case AvatarIKGoal.LeftFoot:
+                return leftSnapTarget;
+            case AvatarIKGoal.RightFoot:
+                return rightSnapTarget;
+            default:
+                throw new ArgumentException($"Avatar IK Goal ({goal}) is not valid for IK snap");
+        }
+    }
+
+    private void SetSnapData(AvatarIKGoal goal, RaycastHit value)
+    {
+        switch (goal)
+        {
+            case AvatarIKGoal.LeftFoot:
+                leftSnapTarget = value;
+                break;
+            case AvatarIKGoal.RightFoot:
+                rightSnapTarget = value;
+                break;
+            default:
+                break;
+        }
+    }
+
+    public Vector3 GetDetectionStartPoint(AvatarIKGoal goal)
+    {
+        if (goal != AvatarIKGoal.LeftFoot && goal != AvatarIKGoal.RightFoot)
+        {
+            throw new ArgumentException($"Avatar IK Goal ({goal}) is not valid for IK snap");
+        }
+        Vector3 referenceSpacePosition = detectionReference.InverseTransformPoint(GetFoot(goal).position);
         Vector3 startPoint = new Vector3(referenceSpacePosition.x, Mathf.Lerp(0, referenceSpacePosition.y, detectionStart), referenceSpacePosition.z);
         return detectionReference.TransformPoint(startPoint);
     }
 
-    private RaycastHit[] GetSuitableSurfaces()
+    private Vector3 GetSmoothSnapPosition(AvatarIKGoal goal)
     {
-        return Physics.RaycastAll(GetDetectionStartPoint(), -detectionReference.up * maxDetectionDistance);
+        switch (goal)
+        {
+            case AvatarIKGoal.LeftFoot:
+                return leftSmoothSnapPosition;
+            case AvatarIKGoal.RightFoot:
+                return rightSmoothSnapPosition;
+            default:
+                throw new ArgumentException($"Avatar IK Goal ({goal}) is not valid for IK snap");
+        }
+    }
+    
+    private void SetSmoothSnapPosition(AvatarIKGoal goal, Vector3 value)
+    {
+        switch (goal)
+        {
+            case AvatarIKGoal.LeftFoot:
+                leftSmoothSnapPosition = value;
+                break;
+            case AvatarIKGoal.RightFoot:
+                rightSmoothSnapPosition = value;
+                break;
+            default:
+                throw new ArgumentException($"Avatar IK Goal ({goal}) is not valid for IK snap");
+        }
+    }
+    
+    private Vector3 GetSmoothSnapNormal(AvatarIKGoal goal)
+    {
+        switch (goal)
+        {
+            case AvatarIKGoal.LeftFoot:
+                return leftSmoothSnapNormal;
+            case AvatarIKGoal.RightFoot:
+                return rightSmoothSnapNormal;
+            default:
+                throw new ArgumentException($"Avatar IK Goal ({goal}) is not valid for IK snap");
+        }
+    }
+    
+    private void SetSmoothSnapNormal(AvatarIKGoal goal, Vector3 value)
+    {
+        switch (goal)
+        {
+            case AvatarIKGoal.LeftFoot:
+                leftSmoothSnapNormal = value;
+                break;
+            case AvatarIKGoal.RightFoot:
+                rightSmoothSnapNormal = value;
+                break;
+            default:
+                throw new ArgumentException($"Avatar IK Goal ({goal}) is not valid for IK snap");
+        }
     }
 
-    private bool GetNearestSurfacePoint(RaycastHit[] hits, out SnapTargetData point)
+    private RaycastHit[] GetSuitableSurfaces(AvatarIKGoal goal)
+    {
+        return Physics.RaycastAll(GetDetectionStartPoint(goal), -detectionReference.up,maxDetectionDistance);
+    }
+
+    private bool GetNearestSurfacePoint(AvatarIKGoal goal, RaycastHit[] hits, out RaycastHit point)
     {
         try
         {
-            Vector3 detectionStartPoint = GetDetectionStartPoint();
-            RaycastHit hit = hits.OrderBy(hit => Vector3.Distance(hit.point, detectionReference.position)).First();
-            float snapThreshold = (Vector3.Distance(hit.point, detectionStartPoint) /
-                                  Vector3.Distance(detectionStartPoint, foot.position));
-            point = new SnapTargetData(hit, snapThreshold);
+            Vector3 detectionStartPoint = GetDetectionStartPoint(goal);
+            RaycastHit hit = hits.Where(h => h.collider.gameObject.CompareTag(detectionTag)).OrderBy(hit => Vector3.Distance(hit.point, detectionReference.position)).First();
+            point = hit;
             return true;
         }
         catch
         {
-            point = new SnapTargetData(new RaycastHit
+            point = new RaycastHit
             {
-                point = foot.position,
+                point = GetFoot(goal).position,
                 normal = detectionReference.up
-            }, 0);
+            };
             return false;
         }
+    }
+
+    private void ApplyIkAdjustmentsToFoot(AvatarIKGoal goal)
+    {
+        bool hasTarget = GetNearestSurfacePoint(goal, GetSuitableSurfaces(goal), out RaycastHit data);
+        SetSnapForFoot(goal,hasTarget);
+        SetSnapData(goal, data);
+        if (!hasTarget) return;
+        SetSmoothSnapPosition(goal,Vector3.Lerp(GetSmoothSnapPosition(goal), data.point, Time.deltaTime * 30));
+        SetSmoothSnapNormal(goal,Vector3.Slerp(GetSmoothSnapPosition(goal), data.normal, Time.deltaTime * 30));
+        anim.SetIKPositionWeight(goal,1);
+        //anim.SetIKRotationWeight(goal,1);
+        anim.SetIKPosition(goal, GetSmoothSnapPosition(goal) + detectionReference.up * surfaceOffset);
+        Quaternion targetRotation = Quaternion.LookRotation(GetSmoothSnapPosition(goal)) * Quaternion.Euler(rotationOffset);
+        //anim.SetIKRotation(goal, targetRotation);
     }
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
     }
+    
+    private void OnAnimatorMove()
+    {
+        transform.position = smoothTransformPos;
+    }
 
     private void OnAnimatorIK(int layerIndex)
     {
-        hasSnapTarget = GetNearestSurfacePoint(GetSuitableSurfaces(), out snapTarget);
-        smoothSnapPosition = Vector3.Lerp(smoothSnapPosition, snapTarget.hit.point, Time.deltaTime * 30);
-        smoothSnapNormal = Vector3.Slerp(smoothSnapNormal, snapTarget.hit.normal, Time.deltaTime * 30);
-        anim.SetIKPositionWeight(ikGoal,1);
-        anim.SetIKRotationWeight(ikGoal,1);
-        anim.SetIKPosition(ikGoal, smoothSnapPosition + detectionReference.up * surfaceOffset);
-        Quaternion targetRotation = Quaternion.LookRotation(smoothSnapNormal) * Quaternion.Euler(rotationOffset);
-        anim.SetIKRotation(ikGoal, targetRotation);
+        targetTransformPos = transform.position;
 
-        Vector3 rotatedHintPosition = Quaternion.AngleAxis(Mathf.Lerp(0, hintRotationOffset, snapTarget.offsetThreshold),
-            detectionReference.position - foot.position) * knee.position;
-        Vector3 targetHintPosition = Vector3.Lerp(knee.position,rotatedHintPosition, snapTarget.offsetThreshold);
-    }
+        ApplyIkAdjustmentsToFoot(AvatarIKGoal.LeftFoot);
+        ApplyIkAdjustmentsToFoot(AvatarIKGoal.RightFoot);
+        float leftFootHeightOffset = transform.InverseTransformPoint(GetSnapData(AvatarIKGoal.LeftFoot).point).y;
+        float rightFootHeightOffset = transform.InverseTransformPoint(GetSnapData(AvatarIKGoal.RightFoot).point).y;
+        if (leftFootHeightOffset > 0.1f && rightFootHeightOffset > 0.1f)
+        {
+            targetTransformPos =
+                transform.TransformPoint(new Vector3(0, Mathf.Min(leftFootHeightOffset, rightFootHeightOffset), 0));
+        }
 
-    private void OnAnimatorMove()
-    {
-    }
-
-    private void LateUpdate()
-    {
-        if (hipBone == null) return;
-        hipBone.position += detectionReference.up * hipsOffset;
+        smoothTransformPos = Vector3.Lerp(smoothTransformPos, targetTransformPos, Time.deltaTime * 5);
     }
 
     public Transform DetectionReference => detectionReference;
     public float MaxDetectionDistance => maxDetectionDistance;
-
-    public bool HasSnapTarget => hasSnapTarget;
-
-    public SnapTargetData SnapTarget => snapTarget;
-
     public float SurfaceOffset => surfaceOffset;
-
-    public Transform Foot => foot;
 }

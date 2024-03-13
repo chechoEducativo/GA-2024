@@ -1488,31 +1488,6 @@ MonoBehaviour:
     m_HintWeight: 1
     m_MaintainTargetPositionOffset: 0
     m_MaintainTargetRotationOffset: 0
---- !u!114 &494415214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1634052510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce08a4e08e123f4d9c4953328460381, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ikGoal: 1
-  ikHint: 1
-  detectionReference: {fileID: 235753083}
-  foot: {fileID: 1634052567}
-  knee: {fileID: 1634052568}
-  detectionStart: 0.359
-  maxDetectionDistance: 0.97
-  surfaceOffset: 0.09
-  snapSlope: 0
-  rotationOffset: {x: 172.6, y: -86.9, z: -90.3}
-  hintRotationOffset: 0
-  hipsOffset: 0
-  hipBone: {fileID: 0}
 --- !u!4 &495202250 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -6024149945523619558, guid: b018f6b3e52daa1458e5d3876f91f755,
@@ -1537,19 +1512,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ce08a4e08e123f4d9c4953328460381, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ikGoal: 0
-  ikHint: 0
   detectionReference: {fileID: 235753083}
-  foot: {fileID: 1634052572}
-  knee: {fileID: 1634052573}
+  rightFoot: {fileID: 1634052567}
+  leftFoot: {fileID: 1634052572}
   detectionStart: 0.359
-  maxDetectionDistance: 0.97
+  maxDetectionDistance: 0.69
   surfaceOffset: 0.09
-  snapSlope: 0
   rotationOffset: {x: 137.7, y: -90.9, z: -94.4}
-  hintRotationOffset: 0
   hipsOffset: 0
   hipBone: {fileID: 1634052575}
+  detectionTag: IKSurface
 --- !u!1 &604691398 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b018f6b3e52daa1458e5d3876f91f755,
@@ -1665,6 +1637,7 @@ MonoBehaviour:
   ikGoal: 1
   snapOffsets: {x: 0.1, y: 0.2}
   snapOffsetParameter: RightFootIKHeight
+  snapSpeed: 5
 --- !u!4 &620786738 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3153535790306996272, guid: b018f6b3e52daa1458e5d3876f91f755,
@@ -1878,9 +1851,9 @@ GameObject:
   - component: {fileID: 988496097}
   - component: {fileID: 988496096}
   - component: {fileID: 988496095}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: IKSurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1966,7 +1939,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.222, z: 2.087}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 2.5008}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1983,9 +1956,9 @@ GameObject:
   - component: {fileID: 988662663}
   - component: {fileID: 988662662}
   - component: {fileID: 988662661}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: IKSurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -2673,10 +2646,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 603569044}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7fde601b114b7144a8d99585be22a4ed,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 494415214}
     - targetCorrespondingSourceObject: {fileID: 1082271958561512970, guid: 7fde601b114b7144a8d99585be22a4ed,
         type: 3}
       insertIndex: -1
