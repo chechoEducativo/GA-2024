@@ -54,6 +54,11 @@ public class FootIk_Aguapanela : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        ikTarget = new RaycastHit
+        {
+            point = transform.position,
+            normal = DetectionReference.up
+        };
     }
 
     /// <summary>
@@ -63,7 +68,7 @@ public class FootIk_Aguapanela : MonoBehaviour
     private void OnAnimatorIK(int layerIndex)
     {
         hasTarget = GetTargetPosition();
-        currentIkPosition = Vector3.Lerp(currentIkPosition, ikTarget.point, Time.deltaTime * snapSpeed);
+        currentIkPosition = Vector3.Lerp(currentIkPosition, hasTarget ? foot.position : ikTarget.point, Time.deltaTime * snapSpeed);
         animator.SetIKPositionWeight(ikGoal, 1.0f);
         float snapInterpolator = animator.GetFloat(snapOffsetParameter);
         float solvedSnapOffset = Mathf.Lerp(snapOffsets.x, snapOffsets.y, snapInterpolator);
@@ -73,7 +78,7 @@ public class FootIk_Aguapanela : MonoBehaviour
         Quaternion rot = Quaternion.LookRotation(ikTarget.normal) * Quaternion.Euler(snapRotationOffset);
         animator.SetIKRotation(ikGoal, rot);
 
-        Vector3 characterSpaceFoot = root.InverseTransformPoint(foot.position);
+        Vector3 characterSpaceFoot = root.InverseTransformPoint(ikTarget.point);
         
         onIkSolved?.Invoke(characterSpaceFoot.y); 
     }
