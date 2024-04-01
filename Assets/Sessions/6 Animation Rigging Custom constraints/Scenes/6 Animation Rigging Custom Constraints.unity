@@ -747,12 +747,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 262831754}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.070399985, z: 0.551}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.070399955, z: 0.551}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1933138893}
+  m_Father: {fileID: 504094460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &269102833 stripped
 Transform:
@@ -1786,7 +1786,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 262831755}
+  - {fileID: 773166049}
+  - {fileID: 1188606028}
   m_Father: {fileID: 1933138893}
   m_LocalEulerAnglesHint: {x: 7.073, y: 0, z: 0}
 --- !u!114 &504094461
@@ -2226,12 +2229,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 773166048}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0704, z: -0.2760001}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.07040004, z: -0.2760001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1933138893}
+  m_Father: {fileID: 504094460}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &773166050
 MonoBehaviour:
@@ -4052,6 +4055,98 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2120459821}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1188606027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1188606028}
+  - component: {fileID: 1188606030}
+  - component: {fileID: 1188606029}
+  m_Layer: 0
+  m_Name: ShoulderAim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1188606028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188606027}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.499585, y: 0.49958447, z: -0.5004148, w: 0.50041497}
+  m_LocalPosition: {x: 0.1384, y: 0.008, z: -0.4013}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 504094460}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1188606029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188606027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c10bdb03db33fb148b858a4a3b646cea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Data:
+    m_ConstrainedObject: {fileID: 1188606028}
+    m_SourceObjects:
+      m_Length: 1
+      m_Item0:
+        transform: {fileID: 773166049}
+        weight: 1
+      m_Item1:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item2:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item3:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item4:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item5:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item6:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item7:
+        transform: {fileID: 0}
+        weight: 0
+    m_Offset: {x: 0, y: 0, z: 0}
+    m_ConstrainedAxes:
+      x: 1
+      y: 1
+      z: 1
+    m_MaintainOffset: 1
+--- !u!114 &1188606030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188606027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48948dfe9d76b07488dacd46a7955fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1190971004 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3153535790306996272, guid: 7fde601b114b7144a8d99585be22a4ed,
@@ -5544,7 +5639,7 @@ MonoBehaviour:
     m_Style:
       shape: {fileID: 4300000, guid: e050c2b16fe384bd994474655a4b4968, type: 2}
       color: {r: 0, g: 0.79649734, b: 1, a: 0.18431373}
-      size: 0.45
+      size: 0.2
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
@@ -6899,7 +6994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 0
+  m_Weight: 1
   m_Data:
     m_Root: {fileID: 69447059}
     m_Mid: {fileID: 1030826946}
@@ -7830,13 +7925,11 @@ Transform:
   m_GameObject: {fileID: 1933138892}
   serializedVersion: 2
   m_LocalRotation: {x: -0.005628757, y: 0.0000000411778, z: -0.00000045044828, w: 0.9999842}
-  m_LocalPosition: {x: 0.106, y: 0.394, z: 0.373}
+  m_LocalPosition: {x: 0.106, y: 0.394, z: 0.282}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 504094460}
-  - {fileID: 262831755}
-  - {fileID: 773166049}
   m_Father: {fileID: 1440731209}
   m_LocalEulerAnglesHint: {x: 7.073, y: 0, z: 0}
 --- !u!114 &1933138894
@@ -7858,7 +7951,7 @@ MonoBehaviour:
       m_Length: 1
       m_Item0:
         transform: {fileID: 281466856}
-        weight: 1
+        weight: 0.5
       m_Item1:
         transform: {fileID: 0}
         weight: 0
@@ -7912,7 +8005,7 @@ MonoBehaviour:
       m_Length: 1
       m_Item0:
         transform: {fileID: 1532074974}
-        weight: 0.8
+        weight: 0.5
       m_Item1:
         transform: {fileID: 0}
         weight: 0
@@ -8770,6 +8863,66 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2120459821}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2110370949 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9171100556185337, guid: 7fde601b114b7144a8d99585be22a4ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 2120459821}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2110370950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2110370949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3c430f382484144e925c097c2d33cfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Data:
+    m_ConstrainedObject: {fileID: 445853198}
+    m_SourceObjects:
+      m_Length: 1
+      m_Item0:
+        transform: {fileID: 1188606028}
+        weight: 1
+      m_Item1:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item2:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item3:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item4:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item5:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item6:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item7:
+        transform: {fileID: 0}
+        weight: 0
+    m_Offset: {x: 0, y: 0, z: 0}
+    m_MinLimit: -180
+    m_MaxLimit: 180
+    m_AimAxis: 2
+    m_UpAxis: 4
+    m_WorldUpType: 0
+    m_WorldUpObject: {fileID: 0}
+    m_WorldUpAxis: 2
+    m_MaintainOffset: 1
+    m_ConstrainedAxes:
+      x: 1
+      y: 1
+      z: 1
 --- !u!1 &2117429553
 GameObject:
   m_ObjectHideFlags: 0
@@ -9133,6 +9286,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1830385947}
+    - targetCorrespondingSourceObject: {fileID: 9171100556185337, guid: 7fde601b114b7144a8d99585be22a4ed,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2110370950}
     - targetCorrespondingSourceObject: {fileID: 2715566404302941441, guid: 7fde601b114b7144a8d99585be22a4ed,
         type: 3}
       insertIndex: -1
@@ -9653,10 +9810,10 @@ MonoBehaviour:
       m_Length: 2
       m_Item0:
         transform: {fileID: 1648955273}
-        weight: 1
+        weight: 0
       m_Item1:
         transform: {fileID: 504094460}
-        weight: 0
+        weight: 1
       m_Item2:
         transform: {fileID: 0}
         weight: 0
