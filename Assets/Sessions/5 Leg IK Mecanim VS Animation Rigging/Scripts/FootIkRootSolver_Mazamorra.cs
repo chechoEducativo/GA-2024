@@ -6,34 +6,42 @@ using UnityEngine;
 
 public class FootIkRootSolver_Mazamorra : MonoBehaviour
 {
+    [SerializeField] private bool enableSolver;
     [SerializeField] private Transform characterRoot;
     [SerializeField] private float readjustmentThreshold;
     [SerializeField] private float readjustmentSpeed = 15.0f;
     [SerializeField] private Rigidbody rigidBody;
 
-    private List<float> heightOffsets = new List<float>();
+    [SerializeField]private List<float> heightOffsets = new List<float>();
+    private Animator animator;
 
     private Vector3 rootTarget;
     private Vector3 currentRootPosition;
+
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        currentRootPosition = characterRoot.position;
+    }
+
     private void OnAnimatorMove()
     {
-        if (heightOffsets.Count >= 2)
+
+        float minimumOffset = heightOffsets.Count >= 2 ? heightOffsets.Min(x => x) : 0.0f;
+        rigidBody.isKinematic = true;
+        animator.applyRootMotion = true;
+        if (minimumOffset > readjustmentThreshold)
         {
-            float minimumOffset = Mathf.Min(heightOffsets[0], heightOffsets[1]);
-            if (minimumOffset > readjustmentThreshold)
-            {
-                rootTarget = characterRoot.TransformPoint(new Vector3(0, minimumOffset, 0));
-                rigidBody.isKinematic = true;
-            }
-            else
-            {
-                rigidBody.isKinematic = false;
-                rootTarget = characterRoot.position;
-            }
+            rootTarget = characterRoot.TransformPoint(new Vector3(0, minimumOffset, 0));
+        }
+        else if (minimumOffset < 0)
+        {
+            rigidBody.isKinematic = false;
+            animator.ApplyBuiltinRootMotion();
         }
         else
         {
-            rigidBody.isKinematic = false;
             rootTarget = characterRoot.position;
         }
 
@@ -46,6 +54,8 @@ public class FootIkRootSolver_Mazamorra : MonoBehaviour
     {
         heightOffsets.Add(heightValue);
     }
+
+
 
     public Vector3 RootTarget => rootTarget;
 }

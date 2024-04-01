@@ -24,6 +24,7 @@ public class FootIk_Aguapanela : MonoBehaviour
     [SerializeField] private Vector3 snapRotationOffset; //Desfase para ajustar rotacion del pie
 
     public FloatEvent onIkSolved;
+    public UnityEvent onIkNotSolved;
 
     private Animator animator;
     
@@ -31,6 +32,7 @@ public class FootIk_Aguapanela : MonoBehaviour
     private RaycastHit ikTarget;
 
     private Vector3 currentIkPosition;
+    private bool waitOneFrame;
     
     /// <summary>
     /// Obtener el punto inicial desde el cual se lanzara el rayo para detectar superficies
@@ -54,11 +56,7 @@ public class FootIk_Aguapanela : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        ikTarget = new RaycastHit
-        {
-            point = transform.position,
-            normal = DetectionReference.up
-        };
+        currentIkPosition = foot.position;
     }
 
     /// <summary>
@@ -68,19 +66,28 @@ public class FootIk_Aguapanela : MonoBehaviour
     private void OnAnimatorIK(int layerIndex)
     {
         hasTarget = GetTargetPosition();
-        currentIkPosition = Vector3.Lerp(currentIkPosition, hasTarget ? foot.position : ikTarget.point, Time.deltaTime * snapSpeed);
-        animator.SetIKPositionWeight(ikGoal, 1.0f);
-        float snapInterpolator = animator.GetFloat(snapOffsetParameter);
-        float solvedSnapOffset = Mathf.Lerp(snapOffsets.x, snapOffsets.y, snapInterpolator);
-        animator.SetIKPosition(ikGoal, currentIkPosition + detectionReference.up * solvedSnapOffset);
-        
-        animator.SetIKRotationWeight(ikGoal, snapInterpolator);
-        Quaternion rot = Quaternion.LookRotation(ikTarget.normal) * Quaternion.Euler(snapRotationOffset);
-        animator.SetIKRotation(ikGoal, rot);
 
-        Vector3 characterSpaceFoot = root.InverseTransformPoint(ikTarget.point);
-        
-        onIkSolved?.Invoke(characterSpaceFoot.y); 
+        currentIkPosition = Vector3.Lerp(currentIkPosition, hasTarget ? foot.position : ikTarget.point, Time.deltaTime * snapSpeed);
+
+        if (hasTarget)
+        {
+            animator.SetIKPositionWeight(ikGoal, 1.0f);
+            float snapInterpolator = animator.GetFloat(snapOffsetParameter);
+            float solvedSnapOffset = Mathf.Lerp(snapOffsets.x, snapOffsets.y, snapInterpolator);
+            animator.SetIKPosition(ikGoal, currentIkPosition + detectionReference.up * solvedSnapOffset);
+            animator.SetIKRotationWeight(ikGoal, snapInterpolator);
+            Quaternion rot = Quaternion.LookRotation(ikTarget.normal) * Quaternion.Euler(snapRotationOffset);
+            animator.SetIKRotation(ikGoal, rot);
+            Vector3 characterSpaceFoot = root.InverseTransformPoint(ikTarget.point);
+            onIkSolved?.Invoke(characterSpaceFoot.y);
+
+        }
+        else
+            onIkSolved?.Invoke(-1);
+    }
+
+    private void FixedUpdate()
+    {
     }
 
     public Transform DetectionReference => detectionReference;
