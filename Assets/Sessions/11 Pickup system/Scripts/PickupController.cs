@@ -146,6 +146,7 @@ public class PickupController : MonoBehaviour//, IPicker
 
     public void OnGrab()
     {
+        return;
         currentGrabbedItem.transform.parent = currentEditedConstraint.transform;
     }
 
