@@ -4,10 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+[CustomEditor(typeof(PickupRigController))]
 public class PickupRigControllerEditor : Editor
 {
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
 
-        [DrawGizmo(GizmoType.Selected | GizmoType.NonSelected, typeof(PickupRigController))]
+        var tg = target as PickupRigController;
+        if (GUILayout.Button("Grab"))
+        {
+            tg.PickUpNearestObject();
+        }
+    }
+
+    [DrawGizmo(GizmoType.Selected | GizmoType.NonSelected, typeof(PickupRigController))]
     public static void DrawGizmos(Component component, GizmoType gizmoType)
     {
         string[] quadrantNames = new[] { "Upper Left", "Upper Right", "Lower Right", "Lower Left" };

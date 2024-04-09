@@ -340,7 +340,7 @@ Transform:
   m_GameObject: {fileID: 117411384}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.31, y: 0.179, z: -1.651}
+  m_LocalPosition: {x: -3.371, y: 1.631, z: 0.909}
   m_LocalScale: {x: 0.18683, y: 0.18683, z: 0.18683}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1394,7 +1394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 1
+  m_Weight: 0
   m_Data:
     m_Root: {fileID: 1899905876}
     m_Mid: {fileID: 1899905877}
@@ -1423,6 +1423,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -3153535790306996272, guid: 7fde601b114b7144a8d99585be22a4ed,
     type: 3}
   m_PrefabInstance: {fileID: 345051639}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1214337323 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 7fde601b114b7144a8d99585be22a4ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 1899905842}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1220894591 stripped
 Transform:
@@ -1775,6 +1781,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: X Bot Example
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 7fde601b114b7144a8d99585be22a4ed,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d80bbf9f0b0749a4d962409ffc8e375e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -2420,9 +2431,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5961cbba6475a47419595d60daa0e6b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxReachingDistance: 1.2
-  perQuadrantAngle: 49.7
+  maxReachingDistance: 1.31
+  perQuadrantAngle: 70
   targetReference: {fileID: 1899905844}
+  anim: {fileID: 1214337323}
+  ikHands:
+  - {fileID: 571358089}
+  - {fileID: 1401249575}
+  hands:
+  - {fileID: 1105183814}
+  - {fileID: 2041751888}
+  availableItems:
+  - {fileID: 117411389}
 --- !u!4 &1986446981 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2563496969622287784, guid: 7fde601b114b7144a8d99585be22a4ed,
@@ -2491,7 +2511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeda7bfbf984f2a4da5ab4b8967b115d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Weight: 1
+  m_Weight: 0
   m_Data:
     m_Root: {fileID: 1899905849}
     m_Mid: {fileID: 1899905850}

@@ -3,21 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PickupRigController : MonoBehaviour
 {
     public struct QuadrantData
     {
         public Vector3 localDirection;
+        public Vector2 animationDirection;
+        public int handIndex;
     }
     
     [SerializeField] private float maxReachingDistance;
     [SerializeField] private float perQuadrantAngle;
     [SerializeField] private Transform targetReference;
+    [SerializeField] private Animator anim;
+    [SerializeField] private Transform[] ikHands;
+    [SerializeField] private TwoBoneIKConstraint[] hands;
 
     public List<Transform> availableItems = new List<Transform>();
     
     private List<QuadrantData> quadrants = new List<QuadrantData>();
+
+    private int ikHandIndex;
 
     private void UpdateQuadrantData()
     {
@@ -26,26 +34,40 @@ public class PickupRigController : MonoBehaviour
             new QuadrantData
             {
                 //UpperLeft
-                localDirection = Quaternion.Euler(-perQuadrantAngle * 0.5f, -perQuadrantAngle * 0.5f, 0) * Vector3.forward * maxReachingDistance
+                localDirection = Quaternion.Euler(-perQuadrantAngle * 0.5f, -perQuadrantAngle * 0.5f, 0) * Vector3.forward * maxReachingDistance,
+                animationDirection = new Vector2( -1,1),
+                handIndex = 0
             },
             new QuadrantData
             {
                 //UpperRight
-                localDirection = Quaternion.Euler(-perQuadrantAngle * 0.5f, perQuadrantAngle * 0.5f, 0) * Vector3.forward * maxReachingDistance
+                localDirection = Quaternion.Euler(-perQuadrantAngle * 0.5f, perQuadrantAngle * 0.5f, 0) * Vector3.forward * maxReachingDistance,
+                animationDirection = new Vector2( 1,1),
+                handIndex = 1
             },
             new QuadrantData
             {
                 //LowerRight
-                localDirection = Quaternion.Euler(perQuadrantAngle * 0.5f, perQuadrantAngle * 0.5f, 0) * Vector3.forward * maxReachingDistance
+                localDirection = Quaternion.Euler(perQuadrantAngle * 0.5f, perQuadrantAngle * 0.5f, 0) * Vector3.forward * maxReachingDistance,
+                animationDirection = new Vector2( 1,-1),
+                handIndex = 1
             },
             new QuadrantData
             {
                 //LowerLeft
-                localDirection = Quaternion.Euler(perQuadrantAngle * 0.5f, -perQuadrantAngle * 0.5f, 0) * Vector3.forward * maxReachingDistance
+                localDirection = Quaternion.Euler(perQuadrantAngle * 0.5f, -perQuadrantAngle * 0.5f, 0) * Vector3.forward * maxReachingDistance,
+                animationDirection = new Vector2( -1,-1),
+                handIndex = 0
             }
         };
     }
 
+    private void SetUpIkConstraint(int id, Vector3 pickUpPosition)
+    {
+        ikHands[id].position = pickUpPosition;
+        ikHandIndex = id;
+    }
+    
     public void PickUpNearestObject()
     {
         Transform nearestItem = availableItems.OrderBy(item =>
@@ -57,13 +79,37 @@ public class PickupRigController : MonoBehaviour
         }).FirstOrDefault();
 
         if (nearestItem == default) return;
+
+        Vector3 localItemPosition = targetReference.InverseTransformPoint(nearestItem.position);
+        int nearestQuadrantId = 0;
+        Vector3 normalizedLocalItemPosition = localItemPosition.normalized;
+        for (int i = 0; i < quadrants.Count; i++)
+        {
+            Vector3 currentNearest = quadrants[nearestQuadrantId].localDirection;
+             
+            float dot = Vector3.Dot(currentNearest, normalizedLocalItemPosition);
+            if (Vector3.Dot(normalizedLocalItemPosition, quadrants[i].localDirection) > dot)
+            {
+                nearestQuadrantId = i;
+            }
+        }
+
+        QuadrantData quadrant = quadrants[nearestQuadrantId];
+        anim.SetFloat("PickupX", quadrant.animationDirection.x);
+        anim.SetFloat("PickupY", quadrant.animationDirection.y);
+        anim.SetTrigger("PickUp");
         
-        // 
+        SetUpIkConstraint(quadrant.handIndex, nearestItem.position);
     }
     
     private void OnValidate()
     {
         UpdateQuadrantData();
+    }
+
+    private void Update()
+    {
+        hands[ikHandIndex].weight = anim.GetFloat("IKPickupWeight2");
     }
 
 
