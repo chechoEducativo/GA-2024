@@ -27,6 +27,8 @@ public class PickupRigController : MonoBehaviour
 
     private int ikHandIndex;
 
+    private Transform grabbedObject;
+    
     private void UpdateQuadrantData()
     {
         quadrants = new List<QuadrantData>()
@@ -70,7 +72,7 @@ public class PickupRigController : MonoBehaviour
     
     public void PickUpNearestObject()
     {
-        Transform nearestItem = availableItems.OrderBy(item =>
+        grabbedObject = availableItems.OrderBy(item =>
         {
             Vector3 itemDir = targetReference.position - item.position;
             float sqrMagnitude = Vector3.SqrMagnitude(itemDir);
@@ -78,9 +80,9 @@ public class PickupRigController : MonoBehaviour
             return sqrMagnitude * dot;
         }).FirstOrDefault();
 
-        if (nearestItem == default) return;
+        if (grabbedObject == default) return;
 
-        Vector3 localItemPosition = targetReference.InverseTransformPoint(nearestItem.position);
+        Vector3 localItemPosition = targetReference.InverseTransformPoint(grabbedObject.position);
         int nearestQuadrantId = 0;
         Vector3 normalizedLocalItemPosition = localItemPosition.normalized;
         for (int i = 0; i < quadrants.Count; i++)
@@ -99,7 +101,19 @@ public class PickupRigController : MonoBehaviour
         anim.SetFloat("PickupY", quadrant.animationDirection.y);
         anim.SetTrigger("PickUp");
         
-        SetUpIkConstraint(quadrant.handIndex, nearestItem.position);
+        SetUpIkConstraint(quadrant.handIndex, grabbedObject.position);
+    }
+
+    public void OnGrab()
+    {
+        if (grabbedObject == null) return;
+        grabbedObject.parent = hands[ikHandIndex].transform;
+    }
+
+    public void OnStashed()
+    {
+        if (grabbedObject == null) return;
+        grabbedObject.gameObject.SetActive(false);
     }
     
     private void OnValidate()
@@ -110,6 +124,11 @@ public class PickupRigController : MonoBehaviour
     private void Update()
     {
         hands[ikHandIndex].weight = anim.GetFloat("IKPickupWeight2");
+        if (grabbedObject != null && grabbedObject.parent != null)
+        {
+            grabbedObject.localPosition =
+                Vector3.Lerp(grabbedObject.localPosition, Vector3.zero, Time.deltaTime * 10.0f);
+        }
     }
 
 

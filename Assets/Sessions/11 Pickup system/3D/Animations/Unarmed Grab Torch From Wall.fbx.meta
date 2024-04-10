@@ -161,8 +161,15 @@ ModelImporter:
           postInfinity: 3
           rotationOrder: 4
       events:
-      - time: 0.37444216
+      - time: 0.36625513
         functionName: OnGrab
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.90306854
+        functionName: OnStashed
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
