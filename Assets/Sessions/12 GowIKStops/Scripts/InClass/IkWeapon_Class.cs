@@ -10,6 +10,7 @@ public class IkWeapon_Class : MonoBehaviour
     {
         StandBy,
         Stopped,
+        Transitioning,
         CoolingDown
     }
 
@@ -18,11 +19,15 @@ public class IkWeapon_Class : MonoBehaviour
 
     [SerializeField] private MultiParentConstraint weaponToArmChild;
     [SerializeField] private ChainIKConstraint armToWeaponIk;
+    [SerializeField] private AnimationCurve transitionEasing;
+    [SerializeField] private float transitionSpeed = 3;
 
     private float currentStopTime;
     private float currentStopTimer;
 
     private float cooldownTimer;
+
+    private float transitionTimer;
     
     public void Stop(float delay)
     {
@@ -42,7 +47,18 @@ public class IkWeapon_Class : MonoBehaviour
                 if (currentStopTimer > currentStopTime)
                 {
                     currentStopTimer = 0;
+                    currentState = AnimationState.Transitioning;
+                }
+                break;
+            case AnimationState.Transitioning:
+                transitionTimer += Time.deltaTime * transitionSpeed;
+                float desiredWeight = transitionEasing.Evaluate(Mathf.Clamp01(transitionTimer));
+                weaponToArmChild.weight = desiredWeight;
+                armToWeaponIk.weight = 1 - desiredWeight;
+                if (transitionTimer > 1)
+                {
                     currentState = AnimationState.CoolingDown;
+                    transitionTimer = 0;
                     weaponToArmChild.weight = 1;
                     armToWeaponIk.weight = 0;
                 }
@@ -56,5 +72,6 @@ public class IkWeapon_Class : MonoBehaviour
                 }
                 break;
         }
+        
     }
 }
