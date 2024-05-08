@@ -188,7 +188,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3324803}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.096394345, y: -0.8259525, z: 0.14877798, w: 0.53514093}
+  m_LocalRotation: {x: 0.096394375, y: -0.8259525, z: 0.14877796, w: 0.5351409}
   m_LocalPosition: {x: 4.6, y: 3.16, z: 4.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -596,7 +596,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.096394345, y: -0.8259525, z: 0.14877798, w: 0.53514093}
+  m_LocalRotation: {x: 0.096394375, y: -0.8259525, z: 0.14877796, w: 0.5351409}
   m_LocalPosition: {x: 4.6, y: 3.16, z: 4.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -879,6 +879,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: X Bot
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7fde601b114b7144a8d99585be22a4ed,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 7fde601b114b7144a8d99585be22a4ed,
         type: 3}
@@ -2203,6 +2208,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chargeSpeed: 0.2
+  lightAttackCost: 20
+  heavyAttackCost: 50
+--- !u!114 &1102072979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102072972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7179706f48541c148abbb0f0c149d507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseStamina: 100
 --- !u!1 &1155753980
 GameObject:
   m_ObjectHideFlags: 0
@@ -2507,6 +2527,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: X Bot (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7fde601b114b7144a8d99585be22a4ed,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 7fde601b114b7144a8d99585be22a4ed,
         type: 3}
       propertyPath: m_Controller
@@ -2524,6 +2549,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1102072976}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7fde601b114b7144a8d99585be22a4ed,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1102072979}
   m_SourcePrefab: {fileID: 100100000, guid: 7fde601b114b7144a8d99585be22a4ed, type: 3}
 --- !u!4 &1748422573 stripped
 Transform:

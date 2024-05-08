@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "LightAttack",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "4cf5db2e-311b-48e4-be0c-aaa8af3dd27f",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -16,7 +16,7 @@
                 },
                 {
                     "name": "HeavyAttack",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "b624b40a-6cce-4e31-962f-540364256d27",
                     "expectedControlType": "Button",
                     "processors": "",
